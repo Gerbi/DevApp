@@ -47494,6 +47494,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47503,7 +47508,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             arrayCategoria: [],
             modal: 0,
             tituloModal: '',
-            tipoAccion: 0
+            tipoAccion: 0,
+            errorCategoria: 0,
+            errorMostrarMsjCategoria: []
         };
     },
 
@@ -47517,6 +47524,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         registrarCategoria: function registrarCategoria() {
+            if (this.validarCategoria()) {
+                return;
+            }
             var me = this;
             axios.post('/categoria/registrar', {
                 'nombre': this.nombre,
@@ -47527,6 +47537,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+        validarCategoria: function validarCategoria() {
+            this.errorCategoria = 0;
+            this.errorMostrarMsjCategoria = [];
+
+            if (!this.nombre) this.errorMostrarMsjCategoria.push("El nombre de la categoria no puede estar vacia");
+            if (this.errorMostrarMsjCategoria.length) this.errorCategoria = 1;
+
+            return this.errorCategoria;
         },
         cerrarModal: function cerrarModal() {
             this.modal = 0;
@@ -47637,7 +47656,7 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(categoria.description) }
+                      domProps: { textContent: _vm._s(categoria.descripcion) }
                     }),
                     _vm._v(" "),
                     _c("td", [
@@ -47756,11 +47775,7 @@ var render = function() {
                               _vm.nombre = $event.target.value
                             }
                           }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "help-block" }, [
-                          _vm._v("(*) Ingrese el nombre de la categoría")
-                        ])
+                        })
                       ])
                     ]),
                     _vm._v(" "),
@@ -47780,8 +47795,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.description,
-                              expression: "description"
+                              value: _vm.descripcion,
+                              expression: "descripcion"
                             }
                           ],
                           staticClass: "form-control",
@@ -47789,18 +47804,45 @@ var render = function() {
                             type: "text",
                             placeholder: "Ingrese Descripcion"
                           },
-                          domProps: { value: _vm.description },
+                          domProps: { value: _vm.descripcion },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.description = $event.target.value
+                              _vm.descripcion = $event.target.value
                             }
                           }
                         })
                       ])
-                    ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.errorCategoria,
+                            expression: "errorCategoria"
+                          }
+                        ],
+                        staticClass: "form-group row div-error"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "text-center text-error" },
+                          _vm._l(_vm.errorMostrarMsjCategoria, function(error) {
+                            return _c("div", {
+                              key: error,
+                              domProps: { textContent: _vm._s(error) }
+                            })
+                          })
+                        )
+                      ]
+                    )
                   ]
                 )
               ]),
@@ -48098,7 +48140,7 @@ exports = module.exports = __webpack_require__(45)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
 
 // exports
 
