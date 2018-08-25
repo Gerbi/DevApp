@@ -110,14 +110,14 @@
                             <div class="form-group row">
                                 <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
                                 <div class="col-md-9">
-                                    <input type="email" v-model="description" class="form-control" placeholder="Enter Email">
+                                    <input type="text" v-model="description" class="form-control" placeholder="Ingrese Descripcion">
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                        <button type="button" v-if="tipoAccion == 1" class="btn btn-primary">Guardar</button>
+                        <button type="button" v-if="tipoAccion == 1" class="btn btn-primary" @click="registrarCategoria">Guardar</button>
                         <button type="button" v-if="tipoAccion == 2" class="btn btn-primary">Actualizar</button>
                     </div>
                 </div>
@@ -168,14 +168,23 @@
           listarCategoria(){
               let me = this;
               axios.get('/categoria').then(function (response) {
-                  me.arrayCategoria = response.data();
+                  me.arrayCategoria = response.data;
               })
               .catch(function (error) {
                   console.log(error)
               });
           },
             registrarCategoria(){
-              
+              let me =this;
+                axios.post('/categoria/registrar',{
+                    'nombre': this.nombre,
+                        'descripcion':this.descripcion
+                }).then(function (response) {
+                    me.cerrarModal();
+                    me.listarCategoria();})
+            .catch(function (error) {
+                console.log(error)
+            });
             },
 
             cerrarModal(){

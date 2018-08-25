@@ -47511,12 +47511,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         listarCategoria: function listarCategoria() {
             var me = this;
             axios.get('/categoria').then(function (response) {
-                me.arrayCategoria = response.data();
+                me.arrayCategoria = response.data;
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        registrarCategoria: function registrarCategoria() {},
+        registrarCategoria: function registrarCategoria() {
+            var me = this;
+            axios.post('/categoria/registrar', {
+                'nombre': this.nombre,
+                'descripcion': this.descripcion
+            }).then(function (response) {
+                me.cerrarModal();
+                me.listarCategoria();
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
         cerrarModal: function cerrarModal() {
             this.modal = 0;
             this.tituloModal = '';
@@ -47774,7 +47785,10 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "email", placeholder: "Enter Email" },
+                          attrs: {
+                            type: "text",
+                            placeholder: "Ingrese Descripcion"
+                          },
                           domProps: { value: _vm.description },
                           on: {
                             input: function($event) {
@@ -47811,7 +47825,8 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-primary",
-                        attrs: { type: "button" }
+                        attrs: { type: "button" },
+                        on: { click: _vm.registrarCategoria }
                       },
                       [_vm._v("Guardar")]
                     )
