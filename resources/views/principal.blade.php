@@ -96,9 +96,8 @@
 <script src="gl/js/pace.min.js"></script>
 <script src="gl/js/Chart.min.js"></script>
 <script src="gl/js/template.js"></script>
-
-
-
+{{--<script src="gl/js/sweetalert.min.js"></script>--}}
+<script src="gl/js/sweetalert2.min.js"></script>
 
 </body>
 

@@ -43,9 +43,16 @@
                                 <button type="button" @click="abrirModal('categoria','actualizar',categoria)" class="btn btn-warning btn-sm">
                                     <i class="icon-pencil"></i>
                                 </button> &nbsp;
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    <i class="icon-trash"></i>
-                                </button>
+                                <template v-if="categoria.condicion">
+                                    <button type="button" @click="desactivarCategoria(categoria.id)" class="btn btn-danger btn-sm">
+                                        <i class="icon-trash"></i>
+                                    </button>
+                                </template>
+                                <template v-else>
+                                    <button type="button" @click="activarCategoria(categoria.id)" class="btn btn-info btn-sm">
+                                        <i class="icon-check"></i>
+                                    </button>
+                                </template>
                             </td>
                             <td v-text="categoria.nombre"></td>
                             <td v-text="categoria.descripcion"></td>
@@ -62,6 +69,7 @@
 
                         </tbody>
                     </table>
+                    <!--pagination-->
                     <nav>
                         <ul class="pagination">
                             <li class="page-item">
@@ -131,29 +139,7 @@
             <!-- /.modal-dialog -->
         </div>
         <!--Fin del modal-->
-        <!-- Inicio del modal Eliminar -->
-        <div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-danger" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Eliminar Categoría</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Estas seguro de eliminar la categoría?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- Fin del modal Eliminar -->
+
     </main>
 </template>
 
@@ -182,7 +168,7 @@
                   console.log(error)
               });
           },
-            registrarCategoria(){
+          registrarCategoria(){
               if(this.validarCategoria()){
                   return;
               }
@@ -197,11 +183,12 @@
                 console.log(error)
             });
             },
-            actualizarCategoria(){
+          actualizarCategoria(){
                 if(this.validarCategoria()){
                     return;
                 }
                 let me =this;
+
                 axios.put('/categoria/actualizar',{
                     'nombre': this.nombre,
                     'descripcion':this.descripcion,
@@ -211,7 +198,69 @@
                     me.listarCategoria();})
                     .catch(function (error) {
                         console.log(error)
-                    });
+                 });
+            },
+            desactivarCategoria(){
+                Swal({
+                    title: 'Esta seguro de desactivar esta categoria?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                }).then((result) => {
+                    if (result.value){
+                        let me = this;
+
+                        axios.put('/categoria/desactivar',{
+                            'id':id
+                        }).then(function (response) {
+                            me.listarCategoria();
+                            Swal(
+                                'Desactivado!',
+                                'El registro ha sido desactivado.',
+                                'success'
+                                )
+                        }).catch(function (error) {
+                                console.log(error)
+                            });
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                    }
+                })
+            },
+            activarCategoria(){
+                Swal({
+                    title: 'Esta seguro de activar esta categoria?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value){
+                        let me = this;
+
+                        axios.put('/categoria/activar',{
+                            'id':id
+                        }).then(function (response) {
+                            me.listarCategoria();
+                            Swal(
+                                'Desactivado!',
+                                'El registro ha sido activado con exito.',
+                                'success'
+                            )
+                        }).catch(function (error) {
+                            console.log(error)
+                        });
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+                    }
+                })
             },
             validarCategoria(){
               this.errorCategoria=0;
