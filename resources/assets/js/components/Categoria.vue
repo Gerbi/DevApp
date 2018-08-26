@@ -72,23 +72,17 @@
                     <!--pagination-->
                     <nav>
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#">Ant</a>
+                            <li class="page-item" v-if="pagination.current_page > 1">
+                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page -1)">Ant</a>
+
+
                             </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">1</a>
+                            <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                <a class="page-link" href="#" @click.prevent="cambiarPagina(page)" v-text="page"></a>
                             </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">4</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Sig</a>
+
+                            <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1)">Sig</a>
                             </li>
                         </ul>
                     </nav>
@@ -109,14 +103,14 @@
                     <div class="modal-body">
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
+                                <label class="col-md-3 form-control-label">Nombre</label>
                                 <div class="col-md-9">
                                     <input type="text" v-model="nombre" class="form-control" placeholder="Nombre de categoría">
 
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
+                                <label class="col-md-3 form-control-label">Descripción</label>
                                 <div class="col-md-9">
                                     <input type="text" v-model="descripcion" class="form-control" placeholder="Ingrese Descripcion">
                                 </div>
@@ -189,15 +183,25 @@
             }
         },
         methods :{
-          listarCategoria(){
+          listarCategoria(page){
               let me = this;
-              axios.get('/categoria').then(function (response) {
-                  me.arrayCategoria = response.data;
+              var url='/categoria?page=' + page;
+              axios.get(url).then(function (response) {
+                  var respuesta = response.data;
+                  me.arrayCategoria = respuesta.categorias.data;
+                  me.pagination = respuesta.pagination;
               })
               .catch(function (error) {
-                  console.log(error)
+                  console.log(error);
               });
           },
+            cambiarPagina(page){
+              let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia la peticion para visualizar la data de esa pagina
+                me.listarCategoria(page)
+            },
           registrarCategoria(){
               if(this.validarCategoria()){
                   return;
@@ -210,7 +214,7 @@
                     me.cerrarModal();
                     me.listarCategoria();})
             .catch(function (error) {
-                console.log(error)
+                console.log(error);
             });
             },
           actualizarCategoria(){
@@ -227,7 +231,7 @@
                     me.cerrarModal();
                     me.listarCategoria();})
                     .catch(function (error) {
-                        console.log(error)
+                        console.log(error);
                  });
             },
             desactivarCategoria(){
