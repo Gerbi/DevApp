@@ -1,7 +1,7 @@
 @extends('principal')
 @section('contenido')
     <template v-if="menu==0">
-        <h1>Contenido 0</h1>
+        <card></card>
     </template>
 
     <template v-if="menu==1">
@@ -9,7 +9,7 @@
     </template>
 
     <template v-if="menu==2">
-        <h1>Contenido del menú 2</h1>
+        <h1>Hola 2</h1>
     </template>
 
     <template v-if="menu==3">

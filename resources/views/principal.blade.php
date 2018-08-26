@@ -5,12 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Sistema Ventas Laravel Vue Js- IncanatoIT">
-    <meta name="author" content="Incanatoit.com">
+    <meta name="description" content="Sistema Ventas Laravel Vue Js">
+    <meta name="author" content="t.me/gerbi">
     <meta name="keyword" content="Sistema ventas Laravel Vue Js, Sistema compras Laravel Vue Js">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="gl/img/favicon.png">
-    <title>Sistema Ventas - IncanatoIT</title>
+    <title>Sistema Ventas</title>
 
     <link rel="stylesheet" href="gl/css/font-awesome.min.css">
     <link rel="stylesheet" href="gl/css/simple-line-icons.min.css">
@@ -85,8 +84,7 @@
 
 <footer class="app-footer">
     <span><a href="t.me/gerbi">Gerbi Dev</a> &copy; 2017</span>
-    <span class="ml-auto">Desarrollado por <a href="http://www.incanatoit.com/">IncanatoIT</a></span>
-    <p>Entonces</p>
+    <span class="ml-auto">Desarrollado por <a href="t.me/gerbi">@gerbidev</a></span>
 </footer>
 
 <script src="{{ asset('js/app.js') }}"></script>
@@ -96,9 +94,8 @@
 <script src="gl/js/pace.min.js"></script>
 <script src="gl/js/Chart.min.js"></script>
 <script src="gl/js/template.js"></script>
-{{--<script src="gl/js/sweetalert.min.js"></script>--}}
+<script src="gl/js/sweetalert.min.js"></script>
 <script src="gl/js/sweetalert2.min.js"></script>
-
 </body>
 
 </html>
