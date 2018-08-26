@@ -1,11 +1,11 @@
 @extends('principal')
 @section('contenido')
     <template v-if="menu==0">
-        <card></card>
+        <categoria></categoria>
     </template>
 
     <template v-if="menu==1">
-        <categoria></categoria>
+        <h1>Hola como estas 1</h1>
     </template>
 
     <template v-if="menu==2">

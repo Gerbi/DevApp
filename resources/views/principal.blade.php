@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="gl/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="gl/css/style.css">
 
+
 </head>
 
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
@@ -88,6 +89,8 @@
 </footer>
 
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="js/plantilla.js"></script>
+
 <script src="gl/js/jquery.min.js"></script>
 <script src="gl/js/popper.min.js"></script>
 <script src="gl/js/bootstrap.min.js"></script>
