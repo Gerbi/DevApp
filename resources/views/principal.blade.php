@@ -91,7 +91,7 @@
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="js/plantilla.js"></script>
 
-<script src="gl/js/jquery.min.js"></script>
+{{--<script src="gl/js/jquery.min.js"></script>--}}
 <script src="gl/js/popper.min.js"></script>
 <script src="gl/js/bootstrap.min.js"></script>
 <script src="gl/js/pace.min.js"></script>
