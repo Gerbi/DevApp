@@ -6,8 +6,8 @@
         </ol>
         <div class="container-fluid">
             <!-- Ejemplo de tabla Listado -->
-            <div class="card">
-                <div class="card-header">
+            <div class="card" style="border: 0px">
+                <div class="card-header" style="">
                     <i class="fa fa-align-justify"></i>Cliente
                     <button type="button" @click="abrirModal('persona','registrar')" class="btn btn-secondary">
                         <i class="icon-plus"></i>&nbsp;Nuevo
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered table-striped table-sm">
+                    <table class="table table-hover table-sm">
                         <thead>
                         <tr>
                             <th>Opciones</th>
@@ -86,51 +86,52 @@
                     </div>
                     <div class="modal-body">
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                            <div class="form-group row">
-                                <label class="col-md-3 form-control-label">Categoria</label>
-                                <div class="col-md-9">
-                                    <select class="form-control" v-model="idcategoria">
-                                        <option value="0" disabled>Seleccione</option>
-                                        <option v-for="categoria in arrayCategoria" :key="categoria.id" :value="categoria.id" v-text="categoria.nombre"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-md-3 form-control-label">Codigo</label>
-                                <div class="col-md-9">
-                                    <input type="text" v-model="codigo" class="form-control" placeholder="Codigo de Barras">
-                                    <barcode :value="codigo" :options="{format: 'EAN-13'}">
-                                        Generando codigo de barras
-                                    </barcode>
-                                </div>
-                            </div>
+
                             <div class="form-group row">
                                 <label class="col-md-3 form-control-label">Nombre</label>
                                 <div class="col-md-9">
-                                    <input type="text" v-model="nombre" class="form-control" placeholder="Nombre de Articulo">
+                                    <input type="text" v-model="nombre" class="form-control" placeholder="Nombre de la persona">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="text-input">Precio de Venta</label>
+                                <label class="col-md-3 form-control-label">Tipo de Documento</label>
                                 <div class="col-md-9">
-                                    <input type="number" v-model="precio_venta" class="form-control">
+                                    <select v-model="tipo_documento">
+                                        <option value="DNI">DNI</option>
+                                        <option value="RUC">RUC</option>
+                                        <option value="PASS">PASS</option>
+                                    </select>
+
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="text-input">Stock</label>
+                                <label class="col-md-3 form-control-label">Numero</label>
                                 <div class="col-md-9">
-                                    <input type="number" v-model="stock" class="form-control" >
+                                    <input type="text" v-model="num_documento" class="form-control" placeholder="Numero de Documento">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" >Descripción</label>
+                                <label class="col-md-3 form-control-label">Direccion</label>
                                 <div class="col-md-9">
-                                    <input type="email" v-model="descripcion" class="form-control" placeholder="Ingrese descripción">
+                                    <input type="text" v-model="direccion" class="form-control" placeholder="Direccion">
                                 </div>
                             </div>
-                            <div v-show="errorArticulo" class="form-group row div-error">
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label">Telefono</label>
+                                <div class="col-md-9">
+                                    <input type="text" v-model="telefono" class="form-control" placeholder="Telefono">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label" for="email-input">Email</label>
+                                <div class="col-md-9">
+                                    <input type="text" v-model="email" class="form-control" placeholder="Email">
+                                </div>
+                            </div>
+
+                            <div v-show="errorPersona" class="form-group row div-error">
                                 <div class="text-center text-error">
-                                    <div v-for="error in errorMostrarMsjArticulo" :key="error" v-text="error">
+                                    <div v-for="error in errorMostrarMsjPersona" :key="error" v-text="error">
                                     </div>
                                 </div>
                             </div>
@@ -139,8 +140,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                        <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarArticulo()">Guardar</button>
-                        <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarArticulo()">Actualizar</button>
+                        <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarPersona()">Guardar</button>
+                        <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarPersona()">Actualizar</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -243,35 +244,35 @@
 
                 let me = this;
 
-                axios.post('/articulo/registrar',{
-                    'idcategoria': this.idcategoria,
-                    'codigo': this.codigo,
+                axios.post('/cliente/registrar',{
                     'nombre': this.nombre,
-                    'stock' : this.stock,
-                    'precio_venta' : this.precio_venta,
-                    'descripcion': this.descripcion
+                    'tipo_documento': this.tipo_documento,
+                    'num_documento': this.num_documento,
+                    'direccion' : this.direccion,
+                    'telefono' : this.telefono,
+                    'email': this.email
                 }).then(function (response) {
                     me.cerrarModal();
-                    me.listarArticulo(1,'','nombre');
+                    me.listarPersona(1,'','nombre');
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
             actualizarPersona(){
-                if (this.validarArticulo()){
+                if (this.validarPersona()){
                     return;
                 }
 
                 let me = this;
 
-                axios.put('/articulo/actualizar',{
-                    'idcategoria': this.idcategoria,
-                    'codigo': this.codigo,
+                axios.put('/cliente/actualizar',{
                     'nombre': this.nombre,
-                    'stock' : this.stock,
-                    'precio_venta' : this.precio_venta,
-                    'descripcion': this.descripcion,
-                    'id': this.articulo_id
+                    'tipo_documento': this.tipo_documento,
+                    'num_documento': this.num_documento,
+                    'direccion' : this.direccion,
+                    'telefono' : this.telefono,
+                    'email': this.email,
+                    'id': this.persona_id
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarArticulo(1,'','nombre');
@@ -281,27 +282,24 @@
             },
 
             validarPersona(){
-                this.errorArticulo=0;
-                this.errorMostrarMsjArticulo =[];
+                this.errorPersona=0;
+                this.errorMostrarMsjPersona =[];
 
-                if (this.idcategoria==0) this.errorMostrarMsjArticulo.push("Seleccione una categoria.");
-                if (!this.nombre) this.errorMostrarMsjArticulo.push("El nombre del articulo no puede estar vacio.");
-                if (!this.stock) this.errorMostrarMsjArticulo.push("El stock del articulo debe ser un numero y no puede estar vacio.");
-                if (!this.precio_venta) this.errorMostrarMsjArticulo.push("El precio venta del articulo debe ser un numero y no puede estar vacio.");
+                if (!this.nombre) this.errorMostrarMsjArticulo.push("El nombre de la persona no puede estar vacio.");
 
-                if (this.errorMostrarMsjArticulo.length) this.errorArticulo = 1;
+                if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
 
-                return this.errorArticulo;
+                return this.errorPersona;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.idcategoria = 0;
-                this.codigo ='';
-                this.nombre='';
-                this.precio_venta = 0;
-                this.stock = 0;
-                this.descripcion='';
+                this.nombre = '';
+                this.tipo_documento = 'DNI';
+                this.num_documento = '';
+                this.direccion = '';
+                this.telefono = '';
+                this.email = '',
                 this.errorArticulo = 0;
             },
             abrirModal(modelo, accion, data = []){
@@ -313,13 +311,12 @@
                             {
                                 this.modal = 1;
                                 this.tituloModal = 'Registrar Articulo';
-                                this.idcategoria =0;
-                                this.nombre_categoria = '';
-                                this.codigo='';
-                                this.nombre= '';
-                                this.precio_venta = 0,
-                                    this.stock = 0;
-                                this.descripcion = '';
+                                this.nombre ='';
+                                this.tipo_documento = 'DNI';
+                                this.num_documento = '';
+                                this.direccion ='';
+                                this.telefono = '';
+                                this.email = '';
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -329,13 +326,13 @@
                                 this.modal=1;
                                 this.tituloModal='Actualizar Articulo';
                                 this.tipoAccion=2;
-                                this.articulo_id=data['id'];
-                                this.idcategoria =data['idcategoria'];
-                                this.codigo=data['codigo'];
-                                this.nombre= data['nombre'];
-                                this.stock = data['stock'];
-                                this.precio_venta = data['precio_venta'],
-                                    this.descripcion = data['descripcion'];
+                                this.persona_id = data['id'];
+                                this.nombre =data['nombre'];
+                                this.tipo_documento=data['tipo_documento'];
+                                this.num_documento= data['num_documento'];
+                                this.direccion = data['direccion'];
+                                this.telefono = data['telefono'],
+                                this.email = data['email'];
                                 break;
                             }
                         }
