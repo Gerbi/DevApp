@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <!-- Ejemplo de tabla Listado -->
             <div class="card" style="border: 0px">
-                <div class="card-header" style="background-color: #fff;">
+                <div class="card-header" style="background-color: white;">
                     <i class="fa fa-align-justify"></i>Proveedor
                     <button type="button" @click="abrirModal('persona','registrar')" class="btn btn-secondary">
                         <i class="icon-plus"></i>&nbsp;Nuevo
@@ -127,7 +127,19 @@
                             <div class="form-group row">
                                 <label class="col-md-3 form-control-label" for="email-input">Email</label>
                                 <div class="col-md-9">
-                                    <input type="text" v-model="email" class="form-control" placeholder="Email">
+                                    <input type="email" v-model="email" class="form-control" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label" for="email-input">Contacto</label>
+                                <div class="col-md-9">
+                                    <input type="text" v-model="contacto" class="form-control" placeholder="Nombre del contacto">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label" for="email-input">Telefono de Contacto</label>
+                                <div class="col-md-9">
+                                    <input type="text" v-model="telefono_contacto" class="form-control" placeholder="Telefono del contacto">
                                 </div>
                             </div>
 
@@ -248,13 +260,15 @@
 
                 let me = this;
 
-                axios.post('/cliente/registrar',{
+                axios.post('/proveedor/registrar',{
                     'nombre': this.nombre,
                     'tipo_documento': this.tipo_documento,
                     'num_documento': this.num_documento,
                     'direccion' : this.direccion,
                     'telefono' : this.telefono,
-                    'email': this.email
+                    'email': this.email,
+                    'contacto' : this.contacto,
+                    'telefono_contacto' : this.telefono_contacto
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarPersona(1,'','nombre');
@@ -269,17 +283,19 @@
 
                 let me = this;
 
-                axios.put('/cliente/actualizar',{
+                axios.put('/proveedor/actualizar',{
                     'nombre': this.nombre,
                     'tipo_documento': this.tipo_documento,
                     'num_documento': this.num_documento,
                     'direccion' : this.direccion,
                     'telefono' : this.telefono,
                     'email': this.email,
+                    'contacto' : this.contacto,
+                    'telefono_contacto' : this.telefono_contacto,
                     'id': this.persona_id
                 }).then(function (response) {
                     me.cerrarModal();
-                    me.listarArticulo(1,'','nombre');
+                    me.listarPersona(1,'','nombre');
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -289,7 +305,7 @@
                 this.errorPersona=0;
                 this.errorMostrarMsjPersona =[];
 
-                if (!this.nombre) this.errorMostrarMsjArticulo.push("El nombre de la persona no puede estar vacio.");
+                if (!this.nombre) this.errorMostrarMsjPersona.push("El nombre de la persona no puede estar vacio.");
 
                 if (this.errorMostrarMsjPersona.length) this.errorPersona = 1;
 
@@ -303,8 +319,10 @@
                 this.num_documento = '';
                 this.direccion = '';
                 this.telefono = '';
-                this.email = '',
-                    this.errorArticulo = 0;
+                this.email = '';
+                this.contacto = '';
+                this.telefono_contacto = '';
+                this.errorPersona = 0;
             },
             abrirModal(modelo, accion, data = []){
                 switch(modelo){
@@ -314,13 +332,15 @@
                             case 'registrar':
                             {
                                 this.modal = 1;
-                                this.tituloModal = 'Registrar Articulo';
+                                this.tituloModal = 'Registrar Proveedor';
                                 this.nombre ='';
-                                this.tipo_documento = 'DNI';
+                                this.tipo_documento = 'RUC';
                                 this.num_documento = '';
                                 this.direccion ='';
                                 this.telefono = '';
                                 this.email = '';
+                                this.contacto ='';
+                                this.telefono_contacto = '';
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -328,21 +348,23 @@
                             {
                                 //console.log(data);
                                 this.modal=1;
-                                this.tituloModal='Actualizar Articulo';
+                                this.tituloModal='Actualizar Proveedor';
                                 this.tipoAccion=2;
                                 this.persona_id = data['id'];
                                 this.nombre =data['nombre'];
                                 this.tipo_documento=data['tipo_documento'];
                                 this.num_documento= data['num_documento'];
                                 this.direccion = data['direccion'];
-                                this.telefono = data['telefono'],
-                                    this.email = data['email'];
+                                this.telefono = data['telefono'];
+                                this.email = data['email'];
+                                this.contacto = data['contacto'];
+                                this.telefono_contacto = data['telefono_contacto'];
                                 break;
                             }
                         }
                     }
                 }
-                this.selectCategoria();
+
             }
         },
         mounted() {
