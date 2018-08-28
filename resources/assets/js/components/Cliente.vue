@@ -8,8 +8,8 @@
             <!-- Ejemplo de tabla Listado -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Articulos
-                    <button type="button" @click="abrirModal('articulo','registrar')" class="btn btn-secondary">
+                    <i class="fa fa-align-justify"></i>Cliente
+                    <button type="button" @click="abrirModal('persona','registrar')" class="btn btn-secondary">
                         <i class="icon-plus"></i>&nbsp;Nuevo
                     </button>
                 </div>
@@ -19,10 +19,12 @@
                             <div class="input-group">
                                 <select class="form-control col-md-3" v-model="criterio">
                                     <option value="nombre">Nombre</option>
-                                    <option value="descripcion">Descripción</option>
+                                    <option value="num_documento">Documento</option>
+                                    <option value="email">Email</option>
+                                    <option value="telefono">Telefono</option>
                                 </select>
-                                <input type="text" v-model="buscar" @keyup.enter="listarArticulo(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                <button type="submit" @click="listarArticulo(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                <input type="text" v-model="buscar" @keyup.enter="listarPersona(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                <button type="submit" @click="listarPersona(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             </div>
                         </div>
                     </div>
@@ -30,48 +32,28 @@
                         <thead>
                         <tr>
                             <th>Opciones</th>
-                            <th>Codigo</th>
                             <th>Nombre</th>
-                            <th>Categoria</th>
-                            <th>Precio Venta</th>
-                            <th>Stock</th>
-                            <th>Descripcion</th>
-                            <th>Estado</th>
+                            <th>Tipo Documento</th>
+                            <th>Numero</th>
+                            <th>Direccion</th>
+                            <th>Telefono</th>
+                            <th>Email</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="articulo in arrayArticulo" :key="articulo.id">
+                        <tr v-for="persona in arrayPersona" :key="persona.id">
                             <td>
-                                <button type="button" @click="abrirModal('articulo','actualizar',articulo)" class="btn btn-warning btn-sm">
+                                <button type="button" @click="abrirModal('persona','actualizar',persona)" class="btn btn-warning btn-sm">
                                     <i class="icon-pencil"></i>
-                                </button> &nbsp;
-                                <template v-if="articulo.condicion">
-                                    <button type="button" class="btn btn-danger btn-sm" @click="desactivarArticulo(articulo.id)">
-                                        <i class="icon-trash"></i>
-                                    </button>
-                                </template>
-                                <template v-else>
-                                    <button type="button" class="btn btn-info btn-sm" @click="activarArticulo(articulo.id)">
-                                        <i class="icon-check"></i>
-                                    </button>
-                                </template>
+                                </button>
                             </td>
-                            <td v-text="articulo.codigo"></td>
-                            <td v-text="articulo.nombre"></td>
-                            <td v-text="articulo.nombre_categoria"></td>
-                            <td v-text="articulo.precio_venta"></td>
-                            <td v-text="articulo.stock"></td>
-                            <td v-text="articulo.descripcion"></td>
+                            <td v-text="persona.nombre"></td>
+                            <td v-text="persona.tipo_documento"></td>
+                            <td v-text="persona.num_documento"></td>
+                            <td v-text="persona.direccion"></td>
+                            <td v-text="persona.telefono"></td>
+                            <td v-text="persona.email"></td>
 
-                            <td>
-                                <div v-if="articulo.condicion">
-                                    <span class="badge badge-success">Activo</span>
-                                </div>
-                                <div v-else>
-                                    <span class="badge badge-danger">Desactivado</span>
-                                </div>
-
-                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -174,20 +156,19 @@
     export default {
         data (){
             return {
-                articulo_id: 0,
-                idcategoria : 0,
-                nombre_categoria : '',
-                codigo : '',
+                persona_id: 0,
                 nombre : '',
-                precio_venta : 0,
-                stock : 0,
-                descripcion : '',
-                arrayArticulo : [],
+                tipo_documento : '',
+                num_documento:'',
+                direccion : '',
+                telefono : '',
+                email : '',
+                arrayPersona : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorArticulo : 0,
-                errorMostrarMsjArticulo : [],
+                errorPersona : 0,
+                errorMostrarMsjPersona : [],
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -235,40 +216,28 @@
             }
         },
         methods : {
-            listarArticulo (page,buscar,criterio){
+            listarPersona (page,buscar,criterio){
                 let me=this;
-                var url= '/articulo?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                var url= '/cliente?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayArticulo = respuesta.articulos.data;
+                    me.arrayPersona = respuesta.personas.data;
                     me.pagination= respuesta.pagination;
                 })
                     .catch(function (error) {
                         console.log(error);
                     });
             },
-            selectCategoria(){
-                let me=this;
-                var url= '/categoria/selectCategoria';
-                axios.get(url).then(function (response) {
-                    // console.log(response)
-                    var respuesta= response.data;
-                    me.arrayCategoria = respuesta.categorias;
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
 
-            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la página actual
                 me.pagination.current_page = page;
                 //Envia la petición para visualizar la data de esa página
-                me.listarArticulo(page,buscar,criterio);
+                me.listarPersona(page,buscar,criterio);
             },
-            registrarArticulo(){
-                if (this.validarArticulo()){
+            registrarPersona(){
+                if (this.validarPersona()){
                     return;
                 }
 
@@ -288,7 +257,7 @@
                     console.log(error);
                 });
             },
-            actualizarArticulo(){
+            actualizarPersona(){
                 if (this.validarArticulo()){
                     return;
                 }
@@ -310,80 +279,8 @@
                     console.log(error);
                 });
             },
-            desactivarArticulo(id){
-                swal({
-                    title: 'Esta seguro de desactivar este articulo?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                    buttonsStyling: false,
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.value) {
-                        let me = this;
 
-                        axios.put('/articulo/desactivar',{
-                            'id': id
-                        }).then(function (response) {
-                            me.listarArticulo(1,'','nombre');
-                            swal(
-                                'Desactivado!',
-                                'El registro ha sido desactivado con éxito.',
-                                'success'
-                            )
-                        }).catch(function (error) {
-                            console.log(error);
-                        });
-
-
-                    } else if (
-                        // Read more about handling dismissals
-                        result.dismiss === swal.DismissReason.cancel
-                    ) {
-
-                    }
-                })
-            },
-            activarArticulo(id){
-                swal({
-                    title: 'Esta seguro de activar este articulo?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    // confirmButtonColor: '#3085d6',
-                    // cancelButtonColor: '#d33',
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                    buttonsStyling: false,
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.value) {
-                        let me = this;
-
-                        axios.put('/articulo/activar',{
-                            'id': id
-                        }).then(function (response) {
-                            me.listarArticulo(1,'','nombre');
-                            swal(
-                                'Activado!',
-                                'El registro ha sido activado con éxito.',
-                                'success'
-                            )
-                        }).catch(function (error) {
-                            console.log(error);
-                        });
-                    } else if (
-                        // Read more about handling dismissals
-                        result.dismiss === swal.DismissReason.cancel
-                    ) {
-                    }
-                })
-            },
-            validarArticulo(){
+            validarPersona(){
                 this.errorArticulo=0;
                 this.errorMostrarMsjArticulo =[];
 
@@ -409,7 +306,7 @@
             },
             abrirModal(modelo, accion, data = []){
                 switch(modelo){
-                    case "articulo":
+                    case "persona":
                     {
                         switch(accion){
                             case 'registrar':
@@ -421,7 +318,7 @@
                                 this.codigo='';
                                 this.nombre= '';
                                 this.precio_venta = 0,
-                                this.stock = 0;
+                                    this.stock = 0;
                                 this.descripcion = '';
                                 this.tipoAccion = 1;
                                 break;
@@ -438,7 +335,7 @@
                                 this.nombre= data['nombre'];
                                 this.stock = data['stock'];
                                 this.precio_venta = data['precio_venta'],
-                                this.descripcion = data['descripcion'];
+                                    this.descripcion = data['descripcion'];
                                 break;
                             }
                         }
@@ -448,7 +345,7 @@
             }
         },
         mounted() {
-            this.listarArticulo(1,this.buscar,this.criterio);
+            this.listarPersona(1,this.buscar,this.criterio);
         }
     }
 </script>
