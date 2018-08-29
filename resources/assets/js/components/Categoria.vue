@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <!-- Ejemplo de tabla Listado -->
             <div class="card" style="border: 0px">
-                <div class="card-header">
+                <div class="card-header" style="background-color: white;">
                     <i class="fa fa-align-justify"></i> Categorías
                     <button type="button" @click="abrirModal('categoria','registrar')" class="btn btn-secondary">
                         <i class="icon-plus"></i>&nbsp;Nuevo
