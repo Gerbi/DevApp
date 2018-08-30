@@ -1,7 +1,7 @@
 <template>
     <main class="main">
         <!-- Breadcrumb -->
-        <ol class="breadcrumb">
+        <ol class="breadcrumb" style="border: white">
             <li class="breadcrumb-item"><a href="/">Escritorio</a></li>
         </ol>
         <div class="container-fluid">
@@ -131,16 +131,26 @@
                                     <input type="email" v-model="email" class="form-control" placeholder="Email">
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="email-input">Contacto</label>
+                                <label class="col-md-3 form-control-label" for="email-input">Rol (*)</label>
                                 <div class="col-md-9">
-                                    <input type="text" v-model="contacto" class="form-control" placeholder="Nombre del contacto">
+                                    <select class="form-control" v-model="idrol">
+                                        <option value="0">Seleccione un rol</option>
+                                        <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.nombre"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 form-control-label" for="email-input">Telefono de Contacto</label>
+                                <label class="col-md-3 form-control-label" for="email-input">Usuario (*)</label>
                                 <div class="col-md-9">
-                                    <input type="text" v-model="telefono_contacto" class="form-control" placeholder="Telefono del contacto">
+                                    <input type="text" v-model="usuario" class="form-control" placeholder="Nombre del usuario">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label" for="email-input">Password (*)</label>
+                                <div class="col-md-9">
+                                    <input type="password" v-model="password" class="form-control" placeholder="Password de Acceso">
                                 </div>
                             </div>
 
@@ -174,7 +184,7 @@
             return {
                 persona_id: 0,
                 nombre : '',
-                tipo_documento : '',
+                tipo_documento : 'DNI',
                 num_documento:'',
                 direccion : '',
                 telefono : '',
@@ -183,6 +193,7 @@
                 password : '',
                 idrol : 0,
                 arrayPersona : [],
+                arrayRol : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -242,6 +253,18 @@
                     var respuesta= response.data;
                     me.arrayPersona = respuesta.personas.data;
                     me.pagination= respuesta.pagination;
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            selectRol(){
+                let me=this;
+                var url= '/rol/selectRol';
+                axios.get(url).then(function (response) {
+                    // console.log(response)
+                    var respuesta= response.data;
+                    me.arrayRol = respuesta.roles;
                 })
                     .catch(function (error) {
                         console.log(error);
@@ -322,11 +345,13 @@
                 this.direccion = '';
                 this.telefono = '';
                 this.email = '';
-                this.contacto = '';
-                this.telefono_contacto = '';
+                this.usuario = '';
+                this.password = '';
+                this.idrol = 0;
                 this.errorPersona = 0;
             },
             abrirModal(modelo, accion, data = []){
+                this.selectRol();
                 switch(modelo){
                     case "persona":
                     {
@@ -334,15 +359,16 @@
                             case 'registrar':
                             {
                                 this.modal = 1;
-                                this.tituloModal = 'Registrar Proveedor';
+                                this.tituloModal = 'Registrar Usuario';
                                 this.nombre ='';
-                                this.tipo_documento = 'RUC';
+                                this.tipo_documento = 'DNI';
                                 this.num_documento = '';
                                 this.direccion ='';
                                 this.telefono = '';
                                 this.email = '';
-                                this.contacto ='';
-                                this.telefono_contacto = '';
+                                this.usuario ='';
+                                this.password ='';
+                                this.idrol =0;
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -350,7 +376,7 @@
                             {
                                 //console.log(data);
                                 this.modal=1;
-                                this.tituloModal='Actualizar Proveedor';
+                                this.tituloModal='Actualizar Usuario';
                                 this.tipoAccion=2;
                                 this.persona_id = data['id'];
                                 this.nombre =data['nombre'];
@@ -359,8 +385,9 @@
                                 this.direccion = data['direccion'];
                                 this.telefono = data['telefono'];
                                 this.email = data['email'];
-                                this.contacto = data['contacto'];
-                                this.telefono_contacto = data['telefono_contacto'];
+                                this.usuario = data['usuario'];
+                                this.password = data['password'];
+                                this.idrol = data['idrol'];
                                 break;
                             }
                         }
