@@ -365,4 +365,15 @@
         color: red !important;
         font-weight: bold;
     }
+    .card{
+        background-color: #3a4149;
+        border-color: #23282c;
+    }
+    .card-header{
+        background-color: #343b41;
+    }
+    .breadcrumb{
+        background-color: #3a4149;
+        border-color: #000;
+    }
 </style>

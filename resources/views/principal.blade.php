@@ -17,9 +17,21 @@
     <style>
         body{
             background-color: #2f353a;
+            color: #e4e7ea;
         }
         .card{
             background-color: #3a4149;
+            border-color: #23282c;
+        }
+        .card-header{
+            background-color: #343b41;
+        }
+        .breadcrumb{
+            background-color: #3a4149;
+            border-color: #000;
+        }
+        .sidebar{
+            border-right: 1px solid #23282c;
         }
     </style>
 

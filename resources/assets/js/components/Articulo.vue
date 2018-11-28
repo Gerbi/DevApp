@@ -1,13 +1,13 @@
 <template>
     <main class="main">
         <!-- Breadcrumb -->
-        <ol class="breadcrumb" style="border: white">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Escritorio</a></li>
         </ol>
         <div class="container-fluid">
             <!-- Ejemplo de tabla Listado -->
-            <div class="card" style="border: 0px">
-                <div class="card-header" style="background-color: white">
+            <div class="card">
+                <div class="card-header">
                     <i class="fa fa-align-justify"></i> Articulos
                     <button type="button" @click="abrirModal('articulo','registrar')" class="btn btn-secondary">
                         <i class="icon-plus"></i>&nbsp;Nuevo
@@ -470,5 +470,19 @@
     .text-error{
         color: red !important;
         font-weight: bold;
+    }
+    .card{
+        background-color: #3a4149;
+        border: 1px solid #23282c;
+        border-radius: .25rem;
+    }
+    .card-header{
+        background-color: #343b41;
+        border-bottom: 1px solid #23282c;
+        padding: .75rem 1.25rem;
+    }
+    .breadcrumb{
+        background-color: #3a4149;
+        border-color: #000;
     }
 </style>
