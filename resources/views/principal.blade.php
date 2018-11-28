@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="gl/css/font-awesome.min.css">
     <link rel="stylesheet" href="gl/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="gl/css/style.css">
+    <style>
+        body{
+            background-color: #2f353a;
+        }
+        .card{
+            background-color: #3a4149;
+        }
+    </style>
 
 
 </head>
