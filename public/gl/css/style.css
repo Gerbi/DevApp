@@ -1233,7 +1233,7 @@ pre {
     background-color: transparent;
     border: 0; }
   .form-control:focus {
-    color: #3e515b;
+    color: #fff;
     background-color: #3e515b;
     border-color: #8ad4ee;
     outline: none; }
@@ -3402,7 +3402,7 @@ button.close {
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column;
-  background-color: #fff;
+  background-color: #3e4548;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   outline: 0; }

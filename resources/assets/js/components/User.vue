@@ -1,13 +1,13 @@
 <template>
     <main class="main">
         <!-- Breadcrumb -->
-        <ol class="breadcrumb" style="border-bottom: 1px solid #23282c">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Escritorio</a></li>
         </ol>
         <div class="container-fluid">
             <!-- Ejemplo de tabla Listado -->
-            <div class="card" style="border: 0px">
-                <div class="card-header" style="background-color: white;">
+            <div class="card">
+                <div class="card-header">
                     <i class="fa fa-align-justify"></i>Usuarios
                     <button type="button" @click="abrirModal('persona','registrar')" class="btn btn-secondary">
                         <i class="icon-plus"></i>&nbsp;Nuevo

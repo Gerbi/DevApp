@@ -103,9 +103,9 @@
 
 </div>
 
-<footer class="app-footer">
+<footer class="app-footer" style="background-color: #23282c; color:white; border:none">
     <span><a href="t.me/gerbi">Gerbi Dev</a> &copy; 2017</span>
-    <span class="ml-auto">Desarrollado por <a href="t.me/gerbi">@gerbidev</a></span>
+    <span class="ml-auto text-white">Desarrollado por <a href="t.me/gerbi">@gerbidev</a></span>
 </footer>
 
 <script src="{{ asset('js/app.js') }}"></script>
